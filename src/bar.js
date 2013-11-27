@@ -19,21 +19,20 @@ define(function(){
     };
 
     Bar.prototype.reset = function(){
-        this.y = this.getStage().canvas.height/2 - this.height/2;
+        this.y = this.parent.height/2 - this.height/2;
     }
 
     Bar.prototype.tick = function(event){
         deltaTime = event.delta;
-        canvas = this.getStage().canvas;
-        deltaY = (deltaTime/1000) * VERTICAL_VELOCITY * event.barDirection;
+        deltaY = (deltaTime/1000) * VERTICAL_VELOCITY * event.directionFactor;
 
         topBound = this.y + deltaY;
         bottomBound = this.y + this.height + deltaY;
 
         if(topBound <= 0){
             this.y = 0;
-        }else if(bottomBound >= canvas.height){
-            this.y = canvas.height - this.height;
+        }else if(bottomBound >= this.parent.height){
+            this.y = this.parent.height - this.height;
         }else{
             this.y += deltaY;
         }

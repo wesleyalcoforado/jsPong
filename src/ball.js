@@ -14,27 +14,28 @@ define(function(){
 
     Ball.prototype = new createjs.Shape();
     Ball.prototype.init = function(leftBar, rightBar, color) {
-        var that = this;
+        this.initialize();
 
-        that.initialize();
-        
-        that.radius = RADIUS;
-        that.verticalVelocity = VERTICAL_VELOCITY;
-        that.horizontalVelocity = HORIZONTAL_VELOCITY;
-        that.leftBar = leftBar;
-        that.rightBar = rightBar;
+        this.radius = RADIUS;
+        this.leftBar = leftBar;
+        this.rightBar = rightBar;
 
-        that.graphics.beginFill(color).drawCircle(0, 0, that.radius);
+        this.graphics.beginFill(color).drawCircle(0, 0, this.radius);
     };
 
     Ball.prototype.reset = function(){
-        this.x = this.getStage().canvas.width / 2;
-        this.y = this.getStage().canvas.height / 2;
+        this.x = this.parent.width / 2;
+        this.y = this.parent.height / 2;
+
+        verticalDirectionFactor = Math.cos(Math.random(180) * Math.PI) > 0 ? 1 : -1;
+        horizontalDirectionFactor = Math.cos(Math.random(180) * Math.PI) > 0 ? 1 : -1;
+
+        this.verticalVelocity = VERTICAL_VELOCITY * verticalDirectionFactor;
+        this.horizontalVelocity = HORIZONTAL_VELOCITY * horizontalDirectionFactor;
     }
 
     Ball.prototype.tick = function(event){
         delta = event.delta;
-        canvas = this.getStage().canvas;
         diameter = this.radius / 2;
 
         topBound = this.y - diameter + this.getDeltaY(delta);
@@ -42,12 +43,12 @@ define(function(){
         leftBound = this.x - diameter + this.getDeltaX(delta);
         rightBound = this.x + diameter + this.getDeltaX(delta);
 
-        if(rightBound < 0 || leftBound > canvas.width){
+        if(rightBound < 0 || leftBound > this.parent.width){
             escapedFromLeftSide = rightBound < 0;
             this.outOfBounds(escapedFromLeftSide);
             return;
         }else{
-            if(bottomBound >= canvas.height || topBound <= 0){
+            if(bottomBound >= this.parent.height || topBound <= 0){
                 this.verticalVelocity *= -1;
             }
 
