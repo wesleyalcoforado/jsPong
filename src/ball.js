@@ -68,9 +68,9 @@ define(["bar", "../lib/createjs"], function(){
             ballAndRightBarOnSameHorizontalPoint = (rightBound >= this.rightBar.x) && (leftBound <= this.rightBar.x + this.rightBar.width);
             ballIsHittingRightBar = ballAndRightBarOnSameVerticalPoint && ballAndRightBarOnSameHorizontalPoint;
 
-            if(ballIsHittingLeftBar || ballIsHittingRightBar){
-                this.horizontalVelocity *= -1;
+            if((ballIsHittingLeftBar && this.horizontalVelocity < 0) || (ballIsHittingRightBar && this.horizontalVelocity > 0)){
                 createjs.Sound.play("hit2");
+                this.horizontalVelocity *= -1;
             }
 
             this.x += this.getDeltaX(delta);;
