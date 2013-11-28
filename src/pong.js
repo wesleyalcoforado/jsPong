@@ -1,4 +1,4 @@
-define(["ball", "bar"], function(Ball, Bar){
+define(["ball", "bar", "../lib/createjs"], function(Ball, Bar){
     var KEYCODE_UP = 38;
     var KEYCODE_DOWN = 40;
     var DIRECTION_UP = -1;

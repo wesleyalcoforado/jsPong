@@ -1,4 +1,4 @@
-define(function(){
+define(["../lib/createjs"], function(){
     var VERTICAL_VELOCITY = 150;
 
     var Bar = function(color){

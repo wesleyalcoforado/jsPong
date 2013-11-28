@@ -1,4 +1,4 @@
-define(function(){
+define(["bar", "../lib/createjs"], function(){
     var HORIZONTAL_VELOCITY = 100;
     var VERTICAL_VELOCITY = 100;
     var RADIUS = 5;
@@ -21,7 +21,14 @@ define(function(){
         this.rightBar = rightBar;
 
         this.graphics.beginFill(color).drawCircle(0, 0, this.radius);
+
+        this.loadSounds();
     };
+
+    Ball.prototype.loadSounds = function(){
+        createjs.Sound.registerSound({id:"hit1", src:"snd/hit1.mp3|snd/hit1.ogg"});
+        createjs.Sound.registerSound({id:"hit2", src:"snd/hit2.mp3|snd/hit2.ogg"});
+    }
 
     Ball.prototype.reset = function(){
         this.x = this.parent.width / 2;
@@ -50,6 +57,7 @@ define(function(){
         }else{
             if(bottomBound >= this.parent.height || topBound <= 0){
                 this.verticalVelocity *= -1;
+                createjs.Sound.play("hit1");
             }
 
             ballAndLeftBarOnSameVerticalPoint = (bottomBound >= this.leftBar.y) && (topBound <= this.leftBar.y + this.leftBar.height);
@@ -62,6 +70,7 @@ define(function(){
 
             if(ballIsHittingLeftBar || ballIsHittingRightBar){
                 this.horizontalVelocity *= -1;
+                createjs.Sound.play("hit2");
             }
 
             this.x += this.getDeltaX(delta);;
